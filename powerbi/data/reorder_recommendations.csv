@@ -1,0 +1,10 @@
+product_id,product,category,weekly_demand,demand_sd,safety_stock,reorder_point,order_qty,on_hand_now,on_order_now,fill_rate,stockout_weeks,position,weeks_of_cover,status,recommended_order,stock_value_now,order_value
+957,Diamondback Women's Serene Classic Comfort Bi,Camping & Hiking,90.50,7.40,21.00,292.40,97.10,104.00,192.00,1.00,0,296.00,1.10,Healthy,0.00,20747.00,0.00
+365,Perfect Fitness Perfect Rip Deck,Cleats,486.50,37.90,108.10,1567.70,504.20,654.05,934.00,1.00,0,1588.05,1.30,Healthy,0.00,26038.00,0.00
+502,Nike Men's Dri-FIT Victory Golf Polo,Women's Apparel,418.00,35.40,100.90,1354.90,512.50,598.25,831.00,1.00,0,1429.25,1.40,Healthy,0.00,19802.00,0.00
+1014,O'Brien Men's Neoprene Life Vest,Indoor/Outdoor Games,362.20,39.90,113.60,1200.30,476.50,691.35,607.00,1.00,0,1298.35,1.90,Healthy,0.00,22946.00,0.00
+1004,Field & Stream Sportsman 16 Gun Fire Safe,Fishing,119.80,11.00,31.40,391.00,119.80,25.00,342.00,1.00,1,367.00,0.20,Reorder now,144.00,6642.00,38255.00
+627,Under Armour Girls' Toddler Spine Surge Runni,Shop By Sport,214.70,19.20,54.60,698.70,408.20,86.90,607.00,1.00,0,693.90,0.40,Reorder now,414.00,2329.00,11095.00
+1073,Pelican Sunstream 100 Kayak,Water Sports,106.00,12.30,35.00,353.00,128.70,73.70,208.00,1.00,0,281.70,0.70,Reorder now,200.00,9816.00,26638.00
+403,Nike Men's CJ Elite 2 TD Football Cleat,Men's Footwear,147.50,13.90,39.70,482.10,188.80,115.65,267.00,1.00,0,382.65,0.80,Reorder now,289.00,9952.00,24868.00
+191,Nike Men's Free 5.0+ Running Shoe,Cardio Equipment,243.80,22.70,64.60,796.10,276.10,304.05,271.00,1.00,0,575.05,1.20,Reorder now,498.00,20225.00,33127.00

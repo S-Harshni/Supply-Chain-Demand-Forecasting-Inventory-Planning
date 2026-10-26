@@ -1,0 +1,57 @@
+// ===== Supply Chain Demand & Inventory Planner: DAX measures =====
+// Tables: dim_product, fact_weekly_demand, fact_delivery, fact_forecast_backtest,
+//         fact_inventory_simulation, reorder_recommendations, scenarios, forecast_accuracy, dim_date
+// Relationships: dim_product[product_id] 1-* every fact table's product_id;
+//                dim_date[Date] 1-* fact_weekly_demand[week], fact_delivery[month],
+//                fact_inventory_simulation[week], fact_forecast_backtest[week]
+
+// ---------- Demand trends ----------
+Units = SUM ( fact_weekly_demand[units] )
+Net Sales = SUM ( fact_weekly_demand[net_sales] )
+Profit Margin % = DIVIDE ( SUM ( fact_weekly_demand[profit] ), [Net Sales] )
+Units LY = CALCULATE ( [Units], SAMEPERIODLASTYEAR ( dim_date[Date] ) )
+Units YoY % = DIVIDE ( [Units] - [Units LY], [Units LY] )
+Units 13W Avg =
+    AVERAGEX (
+        DATESINPERIOD ( dim_date[Date], MAX ( dim_date[Date] ), -91, DAY ),
+        CALCULATE ( [Units] )
+    ) * 7
+
+// ---------- Forecast accuracy (backtest) ----------
+// Use a slicer on fact_forecast_backtest[method]
+Forecast Units = SUM ( fact_forecast_backtest[forecast] )
+Actual Units = SUM ( fact_forecast_backtest[actual] )
+Abs Error = SUMX ( fact_forecast_backtest, ABS ( fact_forecast_backtest[actual] - fact_forecast_backtest[forecast] ) )
+WAPE % = DIVIDE ( [Abs Error], [Actual Units] )
+Forecast Bias % = DIVIDE ( [Forecast Units] - [Actual Units], [Actual Units] )
+Forecast Accuracy % = 1 - [WAPE %]
+
+// ---------- Inventory risk & value ----------
+Inventory Value = SUM ( fact_inventory_simulation[stock_value] )
+Avg Weekly Inventory Value = AVERAGEX ( VALUES ( fact_inventory_simulation[week] ), CALCULATE ( [Inventory Value] ) )
+Fill Rate % = DIVIDE ( SUM ( fact_inventory_simulation[served] ), SUM ( fact_inventory_simulation[demand] ) )
+Lost Sales Units = SUM ( fact_inventory_simulation[lost_sales] )
+Stockout Weeks = CALCULATE ( COUNTROWS ( fact_inventory_simulation ), fact_inventory_simulation[lost_sales] > 0 )
+Inventory Value Now = SUM ( reorder_recommendations[stock_value_now] )
+Products to Reorder =
+    CALCULATE ( COUNTROWS ( reorder_recommendations ),
+        reorder_recommendations[status] IN { "Reorder now", "Stockout risk" } )
+Products at Stockout Risk = CALCULATE ( COUNTROWS ( reorder_recommendations ), reorder_recommendations[status] = "Stockout risk" )
+Reorder Value = SUM ( reorder_recommendations[order_value] )
+Weeks of Cover = DIVIDE ( SUM ( reorder_recommendations[on_hand_now] ), SUM ( reorder_recommendations[weekly_demand] ) )
+
+// ---------- Delivery performance ----------
+Shipments = SUM ( fact_delivery[shipments] )
+Late Shipments = SUM ( fact_delivery[late_shipments] )
+Late Rate % = DIVIDE ( [Late Shipments], [Shipments] )
+On-Time Rate % = 1 - [Late Rate %]
+Avg Promised Days = DIVIDE ( SUM ( fact_delivery[promised_days] ), [Shipments] )
+Avg Actual Days = DIVIDE ( SUM ( fact_delivery[actual_days] ), [Shipments] )
+Avg Delay Days = [Avg Actual Days] - [Avg Promised Days]
+
+// ---------- Scenarios ----------
+Scenario Fill Rate % = DIVIDE ( SUM ( scenarios[fill_rate_pct] ), 100 )
+Scenario Lost Units = SUM ( scenarios[lost_units] )
+Fill Rate vs Base (pts) =
+    [Scenario Fill Rate %] * 100
+        - CALCULATE ( SUM ( scenarios[fill_rate_pct] ), scenarios[scenario] = "Base plan", REMOVEFILTERS ( scenarios ) )

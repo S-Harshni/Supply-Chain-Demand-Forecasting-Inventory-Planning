@@ -1,0 +1,161 @@
+{
+  "headline": {
+    "order_lines": 180519,
+    "core_products": 9,
+    "core_share_of_units_pct": 86.4,
+    "weeks_of_history": 142,
+    "champion": "13-week average",
+    "champion_wape_4w_pct": 5.0,
+    "champion_bias_pct": 1.1,
+    "gb_wape_4w_pct": 5.6,
+    "worst_wape_4w_pct": 8.2,
+    "worst_method": "Last week",
+    "on_time_delivery_pct": 42.7,
+    "worst_mode": "First Class",
+    "worst_mode_late_pct": 100.0,
+    "inventory_value_now": 138497,
+    "avg_inventory_value": 149693,
+    "products_stockout_risk": 0,
+    "products_reorder_now": 5,
+    "products_overstocked": 0,
+    "reorder_value": 133983,
+    "policies": {
+      "13-week average": {
+        "fill_rate_pct": 100.0,
+        "lost_units": 2,
+        "stockout_product_weeks": 1,
+        "avg_inventory_value": 164972
+      },
+      "Gradient boosting": {
+        "fill_rate_pct": 99.99,
+        "lost_units": 7,
+        "stockout_product_weeks": 1,
+        "avg_inventory_value": 170964
+      },
+      "4-week average": {
+        "fill_rate_pct": 99.98,
+        "lost_units": 12,
+        "stockout_product_weeks": 1,
+        "avg_inventory_value": 164962
+      }
+    },
+    "promise": {
+      "late_pct_now": 57.3,
+      "late_pct_with_realistic_promise": 34.1,
+      "typical_days_by_mode": {
+        "First Class": 2.0,
+        "Same Day": 0.0,
+        "Second Class": 4.0,
+        "Standard Class": 4.0
+      },
+      "promised_days_by_mode": {
+        "First Class": 1.0,
+        "Same Day": 0.0,
+        "Second Class": 2.0,
+        "Standard Class": 4.0
+      }
+    },
+    "drift": {
+      "forecast_units_next_4_weeks": 8756,
+      "actual_units_next_4_weeks": 440,
+      "actual_vs_forecast_pct": 5.0
+    },
+    "growth_2016_vs_2015_pct": -0.9,
+    "jan_sep_growth_2017_vs_2016_pct": -5.1,
+    "peak_month": 9,
+    "season_max": 1.015,
+    "season_min": 0.987,
+    "low_month": 2
+  },
+  "quality": {
+    "rows_in_source": 180519,
+    "personal_or_empty_columns_removed": 11,
+    "exact_duplicate_rows": 0,
+    "product_names_with_stray_spaces": 4,
+    "cancelled_lines": 3692,
+    "suspected_fraud_lines": 4062,
+    "late_flag_mismatches_excluding_cancelled": 0,
+    "cancelled_shipments_excluded_from_delivery_kpis": 7754,
+    "products_with_cost_capped_at_price": 0,
+    "lines_after_catalogue_break": 8557,
+    "products_before_break": 100,
+    "products_after_break": 31,
+    "products_that_stop_at_break": 87,
+    "rows_clean": 180519,
+    "demand_lines": 172765,
+    "first_order": "2015-01-01",
+    "last_order": "2018-01-31",
+    "products_discontinued_2017": 45,
+    "products_launched_2017": 42,
+    "products_selling_throughout": 9
+  },
+  "scores": [
+    {
+      "method": "13-week average",
+      "wape_weekly_pct": 7.9,
+      "wape_4week_total_pct": 5.0,
+      "bias_pct": 1.1
+    },
+    {
+      "method": "Same week last year",
+      "wape_weekly_pct": 10.6,
+      "wape_4week_total_pct": 5.4,
+      "bias_pct": 0.7
+    },
+    {
+      "method": "Gradient boosting",
+      "wape_weekly_pct": 9.0,
+      "wape_4week_total_pct": 5.6,
+      "bias_pct": 1.4
+    },
+    {
+      "method": "4-week average",
+      "wape_weekly_pct": 8.7,
+      "wape_4week_total_pct": 6.0,
+      "bias_pct": 0.6
+    },
+    {
+      "method": "Last week",
+      "wape_weekly_pct": 10.7,
+      "wape_4week_total_pct": 8.2,
+      "bias_pct": 0.9
+    }
+  ],
+  "scenarios": [
+    {
+      "scenario": "Base plan",
+      "fill_rate_pct": 100.0,
+      "lost_units": 2,
+      "products_with_stockouts": 1,
+      "avg_inventory_value": 164972
+    },
+    {
+      "scenario": "Demand +20% (unplanned)",
+      "fill_rate_pct": 97.4,
+      "lost_units": 1884,
+      "products_with_stockouts": 9,
+      "avg_inventory_value": 110649
+    },
+    {
+      "scenario": "Demand -20% (unplanned)",
+      "fill_rate_pct": 100.0,
+      "lost_units": 0,
+      "products_with_stockouts": 0,
+      "avg_inventory_value": 249794
+    },
+    {
+      "scenario": "Supplier lead time 2 -> 3 weeks",
+      "fill_rate_pct": 92.6,
+      "lost_units": 4507,
+      "products_with_stockouts": 9,
+      "avg_inventory_value": 84755
+    },
+    {
+      "scenario": "Demand +20% and lead time 3 weeks",
+      "fill_rate_pct": 81.5,
+      "lost_units": 13546,
+      "products_with_stockouts": 9,
+      "avg_inventory_value": 67342
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+data/raw/
+data/*.db
+__pycache__/
+.pytest_cache/
+.venv/
+*.pbix.bak

@@ -1,0 +1,119 @@
+product_id,product,category,department,unit_price,unit_cost,core_product
+19,Nike Men's Fingertrap Max Training Shoe,Soccer,Fitness,124.99,82.35,False
+24,Elevation Training Mask 2.0,Soccer,Fitness,79.99,51.86,False
+35,adidas Brazuca 2014 Official Match Ball,Baseball & Softball,Fitness,159.99,107.71,False
+37,adidas Kids' F5 Messi FG Soccer Cleat,Baseball & Softball,Fitness,34.99,22.87,False
+44,adidas Men's F10 Messi TRX FG Soccer Cleat,Baseball & Softball,Fitness,59.99,39.95,False
+58,Diamondback Boys' Insight 24 Performance Hybr,Basketball,Fitness,299.99,184.25,False
+60,SOLE E25 Elliptical,Basketball,Fitness,999.99,601.5,False
+61,Diamondback Girls' Clarity 24 Hybrid Bike 201,Basketball,Fitness,299.99,209.9,False
+78,Nike Kids' Grade School KD VI Basketball Shoe,Lacrosse,Fitness,99.99,65.51,False
+93,Under Armour Men's Tech II T-Shirt,Lacrosse,Fitness,24.99,16.36,False
+116,Nike Men's Comfort 2 Slide,Tennis & Racquet,Fitness,44.99,30.14,False
+127,Stiga Master Series ST3100 Competition Indoor,Hockey,Fitness,329.99,219.9,False
+134,Nike Women's Legend V-Neck T-Shirt,Hockey,Fitness,25.0,16.97,False
+135,Nike Dri-FIT Crew Sock 6 Pack,Hockey,Fitness,22.0,14.29,False
+172,Nike Women's Tempo Shorts,Cardio Equipment,Footwear,30.0,20.24,False
+191,Nike Men's Free 5.0+ Running Shoe,Cardio Equipment,Footwear,99.99,66.52,True
+203,GoPro HERO3+ Black Edition Camera,Strength Training,Footwear,399.99,268.82,False
+208,SOLE E35 Elliptical,Strength Training,Footwear,1999.99,1454.99,False
+216,Yakima DoubleDown Ace Hitch Mount 4-Bike Rack,Strength Training,Footwear,189.0,121.62,False
+226,Bowflex SelectTech 1090 Dumbbells,Fitness Accessories,Footwear,599.99,403.79,False
+235,Under Armour Hustle Storm Medium Duffle Bag,Fitness Accessories,Footwear,34.99,23.3,False
+249,Under Armour Women's Micro G Skulpt Running S,Boxing & MMA,Footwear,54.97,36.36,False
+251,Brooks Women's Ghost 6 Running Shoe,Boxing & MMA,Footwear,89.99,57.5,False
+258,Nike Women's Free 5.0 TR FIT PRT 4 Training S,Boxing & MMA,Footwear,94.99,60.75,False
+273,Under Armour Kids' Mercenary Slide,Electronics,Footwear,27.99,18.46,False
+276,Under Armour Women's Ignite Slide,Electronics,Footwear,31.99,20.95,False
+278,Under Armour Men's Compression EV SL Slide,Electronics,Footwear,44.99,30.05,False
+282,Under Armour Women's Ignite PIP VI Slide,Electronics,Footwear,31.99,22.07,False
+295,Fitbit The One Wireless Activity & Sleep Trac,Kids' Golf Clubs,Outdoors,99.95,63.59,False
+303,Garmin Forerunner 910XT GPS Watch,Kids' Golf Clubs,Outdoors,399.99,302.39,False
+305,Mio ALPHA Heart Rate Monitor/Sport Watch,Kids' Golf Clubs,Outdoors,199.0,137.05,False
+306,Polar FT4 Heart Rate Monitor,Kids' Golf Clubs,Outdoors,89.99,57.09,False
+311,Polar Loop Activity Tracker,Kids' Golf Clubs,Outdoors,109.95,78.01,False
+359,Nike Men's Free TR 5.0 TB Training Shoe,As Seen on  TV!,Footwear,99.99,68.57,False
+364,Total Gym 1400,Cleats,Apparel,299.99,190.19,False
+365,Perfect Fitness Perfect Rip Deck,Cleats,Apparel,59.99,39.81,True
+403,Nike Men's CJ Elite 2 TD Football Cleat,Men's Footwear,Apparel,129.99,86.05,True
+502,Nike Men's Dri-FIT Victory Golf Polo,Women's Apparel,Golf,50.0,33.1,True
+564,Nike Men's Deutschland Weltmeister Winners Bl,Girls' Apparel,Golf,30.0,20.21,False
+565,adidas Youth Germany Black/Red Away Match Soc,Girls' Apparel,Golf,70.0,46.11,False
+567,adidas Men's Germany Black Crest Away Tee,Girls' Apparel,Golf,25.0,16.79,False
+572,TYR Boys' Team Digi Jammer,Girls' Apparel,Golf,39.99,25.83,False
+607,Garmin Approach S3 Golf GPS Watch,Trade-In,Outdoors,249.99,179.99,False
+625,Nike Men's Kobe IX Elite Low Basketball Shoe,Shop By Sport,Golf,199.99,142.67,False
+627,Under Armour Girls' Toddler Spine Surge Runni,Shop By Sport,Golf,39.99,26.8,True
+642,Columbia Men's PFG Anchor Tough T-Shirt,Shop By Sport,Golf,30.0,20.37,False
+646,Merrell Women's Grassbow Sport Hiking Shoe,Men's Golf Clubs,Outdoors,99.99,64.79,False
+647,Merrell Women's Siren Mid Waterproof Hiking B,Men's Golf Clubs,Outdoors,134.99,90.63,False
+652,Merrell Women's Grassbow Sport Waterproof Hik,Men's Golf Clubs,Outdoors,129.99,83.84,False
+666,Merrell Men's All Out Flash Trail Running Sho,Men's Golf Clubs,Outdoors,109.99,70.66,False
+671,Cleveland Golf Collegiate My Custom Wedge 588,Women's Golf Clubs,Outdoors,209.99,145.14,False
+677,TaylorMade White Smoke IN-12 Putter,Women's Golf Clubs,Outdoors,99.99,63.89,False
+691,MDGolf Pittsburgh Penguins Putter,Women's Golf Clubs,Outdoors,79.99,47.88,False
+703,Top Flite Women's 2014 XL Hybrid,Golf Apparel,Outdoors,19.99,13.46,False
+705,Cleveland Golf Women's 588 RTX CB Satin Chrom,Golf Apparel,Outdoors,119.99,88.54,False
+715,TaylorMade Women's RBZ SL Rescue,Golf Apparel,Outdoors,129.99,86.99,False
+724,LIJA Women's Mid-Length Panel Golf Shorts,Golf Shoes,Outdoors,100.0,66.0,False
+725,LIJA Women's Button Golf Dress,Golf Shoes,Outdoors,108.0,67.37,False
+728,LIJA Women's Eyelet Sleeveless Golf Polo,Golf Shoes,Outdoors,65.0,42.25,False
+730,LIJA Women's Argyle Golf Polo,Golf Shoes,Outdoors,80.0,50.42,False
+743,Ogio Race Golf Shoes,Golf Bags & Carts,Outdoors,169.99,107.7,False
+768,Titleist Club Glove Travel Cover,Golf Gloves,Outdoors,299.99,193.47,False
+771,Clicgear Rovic Cooler Bag,Golf Gloves,Outdoors,39.99,26.45,False
+773,Titleist Small Wheeled Travel Cover,Golf Gloves,Outdoors,249.99,163.14,False
+775,Clicgear 8.0 Shoe Brush,Golf Gloves,Outdoors,9.99,6.87,False
+777,Bag Boy M330 Push Cart,Golf Gloves,Outdoors,79.99,51.83,False
+778,Bag Boy Beverage Holder,Golf Gloves,Outdoors,24.99,16.87,False
+786,TaylorMade 2014 Purelite Stand Bag,Golf Gloves,Outdoors,179.99,119.06,False
+792,Hirzl Men's Hybrid Golf Glove,Golf Balls,Outdoors,14.99,10.08,False
+793,Hirzl Women's Hybrid Golf Glove,Golf Balls,Outdoors,14.99,10.22,False
+797,Hirzl Women's Soffft Flex Golf Glove,Golf Balls,Outdoors,17.99,12.39,False
+804,Glove It Women's Imperial Golf Glove,Golf Balls,Outdoors,19.99,13.22,False
+810,Glove It Women's Mod Oval Golf Glove,Golf Balls,Outdoors,19.99,13.27,False
+818,Titleist Pro V1x Golf Balls,Electronics,Outdoors,47.99,31.75,False
+821,Titleist Pro V1 High Numbers Personalized Gol,Electronics,Outdoors,51.99,33.69,False
+822,Titleist Pro V1x High Numbers Golf Balls,Electronics,Outdoors,47.99,31.45,False
+823,Titleist Pro V1x High Numbers Personalized Go,Electronics,Outdoors,51.99,34.33,False
+825,Bridgestone e6 Straight Distance NFL Tennesse,Electronics,Outdoors,31.99,21.43,False
+828,Bridgestone e6 Straight Distance NFL San Dieg,Electronics,Outdoors,31.99,20.59,False
+835,Bridgestone e6 Straight Distance NFL Carolina,Electronics,Outdoors,31.99,21.38,False
+845,Garmin Approach S4 Golf GPS Watch,Kids' Golf Clubs,Outdoors,299.99,214.86,False
+858,GolfBuddy VT3 GPS Watch,Kids' Golf Clubs,Outdoors,199.99,134.39,False
+860,Bushnell Pro X7 Jolt Slope Rangefinder,Kids' Golf Clubs,Outdoors,599.99,441.93,False
+885,Team Golf St. Louis Cardinals Putter Grip,Accessories,Outdoors,24.99,16.42,False
+886,Team Golf San Francisco Giants Putter Grip,Accessories,Outdoors,24.99,16.56,False
+893,Team Golf Pittsburgh Steelers Putter Grip,Accessories,Outdoors,24.99,16.08,False
+897,Team Golf New England Patriots Putter Grip,Accessories,Outdoors,24.99,16.79,False
+905,Team Golf Texas Longhorns Putter Grip,Accessories,Outdoors,24.99,16.65,False
+906,Team Golf Tennessee Volunteers Putter Grip,Accessories,Outdoors,24.99,16.17,False
+917,Glove It Women's Mod Oval 3-Zip Carry All Gol,Trade-In,Outdoors,21.99,14.84,False
+924,Glove It Urban Brick Golf Towel,Trade-In,Outdoors,15.99,10.76,False
+926,Glove It Imperial Golf Towel,Trade-In,Outdoors,15.99,10.4,False
+957,Diamondback Women's Serene Classic Comfort Bi,Camping & Hiking,Fan Shop,299.98,199.49,True
+977,ENO Atlas Hammock Straps,Hunting & Shooting,Fan Shop,29.99,20.47,False
+981,The North Face Women's Recon Backpack,Hunting & Shooting,Fan Shop,99.0,67.21,False
+982,insta-bed Neverflat Air Mattress,Hunting & Shooting,Fan Shop,149.99,100.72,False
+1004,Field & Stream Sportsman 16 Gun Fire Safe,Fishing,Fan Shop,399.98,265.66,True
+1014,O'Brien Men's Neoprene Life Vest,Indoor/Outdoor Games,Fan Shop,49.98,33.19,True
+1059,Pelican Maverick 100X Kayak,Water Sports,Fan Shop,349.99,238.39,False
+1073,Pelican Sunstream 100 Kayak,Water Sports,Fan Shop,199.99,133.19,True
+1346,Sports Books,Books ,Book Shop,31.08,21.38,False
+1347,Baby sweater,Baby ,Apparel,59.08,39.95,False
+1348,CDs of rock,CDs ,Discs Shop,11.29,7.59,False
+1349,Web Camera,Cameras ,Technology,452.04,297.39,False
+1350,Children's heaters,Children's Clothing,Apparel,357.1,238.54,False
+1351,Dell Laptop,Computers,Technology,1500.0,991.35,False
+1352,Industrial consumer electronics,Consumer Electronics,Technology,252.88,170.29,False
+1353,Porcelain crafts,Crafts,Apparel,461.48,311.5,False
+1354,DVDs,DVDs,Discs Shop,164.38,110.7,False
+1355,Lawn mower,Garden,Outdoors,532.58,341.52,False
+1356,First aid kit,Health and Beauty,Health and Beauty ,293.04,201.16,False
+1357,Men's gala suit,Men's Clothing,Apparel,210.85,146.67,False
+1358,Rock music,Music,Discs Shop,260.65,170.08,False
+1359,Adult dog supplies,Pet Supplies,Pet Shop,84.4,57.75,False
+1360,Smart watch,Sporting Goods,Fitness,327.75,220.89,False
+1361,Toys,Toys,Fan Shop,11.54,7.49,False
+1362,Fighting video games,Video Games,Discs Shop,39.75,26.62,False
+1363,Summer dresses,Women's Clothing,Apparel,215.82,142.5,False

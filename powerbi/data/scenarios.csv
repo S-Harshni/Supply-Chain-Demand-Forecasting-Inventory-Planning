@@ -1,0 +1,6 @@
+scenario,fill_rate_pct,lost_units,products_with_stockouts,avg_inventory_value
+Base plan,100.0,2,1,164972
+Demand +20% (unplanned),97.4,1884,9,110649
+Demand -20% (unplanned),100.0,0,0,249794
+Supplier lead time 2 -> 3 weeks,92.6,4507,9,84755
+Demand +20% and lead time 3 weeks,81.5,13546,9,67342
