@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Supply Chain Demand & Inventory Planner</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+  :root { --bg:#f6f7f9; --card:#fff; --ink:#1d2330; --muted:#5d6675; --line:#e3e6eb; --accent:#1f5fbf; --good:#1e8a4c; --warn:#c77700; --bad:#c23b3b; }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; background:var(--bg); color:var(--ink); }
+  header { background:#14213d; color:#fff; padding:22px 24px; }
+  header h1 { margin:0 0 6px; font-size:22px; }
+  header p { margin:0; color:#c9d2e3; font-size:14px; max-width:900px; line-height:1.5; }
+  main { max-width:1180px; margin:0 auto; padding:18px 16px 40px; }
+  .tabs { display:flex; gap:6px; flex-wrap:wrap; margin:4px 0 16px; }
+  .tabs button { border:1px solid var(--line); background:#fff; padding:8px 14px; border-radius:20px; cursor:pointer; font-size:14px; color:var(--ink); }
+  .tabs button.on { background:var(--accent); color:#fff; border-color:var(--accent); }
+  .kpis { display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:12px; margin-bottom:16px; }
+  .kpi { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:14px; }
+  .kpi .v { font-size:24px; font-weight:700; margin:4px 0 2px; }
+  .kpi .l { font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; }
+  .kpi .s { font-size:12.5px; color:var(--muted); }
+  .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(420px,1fr)); gap:14px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:16px; min-width:0; }
+  .card h2 { font-size:15px; margin:0 0 4px; }
+  .card .note { font-size:13px; color:var(--muted); margin:0 0 10px; line-height:1.45; }
+  .insight { background:#eef4ff; border-left:4px solid var(--accent); padding:10px 12px; border-radius:6px; font-size:13.5px; line-height:1.5; margin-top:10px; }
+  table { width:100%; border-collapse:collapse; font-size:13px; }
+  th, td { text-align:left; padding:7px 6px; border-bottom:1px solid var(--line); white-space:nowrap; }
+  th { color:var(--muted); font-weight:600; font-size:12px; }
+  td.n, th.n { text-align:right; }
+  .tag { padding:2px 8px; border-radius:10px; font-size:12px; font-weight:600; }
+  .t-Healthy { background:#e4f4ea; color:var(--good); }
+  .t-Reorder { background:#fff1dc; color:var(--warn); }
+  .t-Stockout { background:#fde6e6; color:var(--bad); }
+  .t-Overstocked { background:#e8eefc; color:var(--accent); }
+  .scroll { overflow-x:auto; }
+  .hide { display:none; }
+  footer { color:var(--muted); font-size:12.5px; text-align:center; margin-top:26px; line-height:1.6; }
+  canvas { max-height:300px; }
+  @media (max-width:520px){ .grid { grid-template-columns:1fr; } header h1{font-size:19px;} }
+</style>
+</head>
+<body>
+<header>
+  <h1>Supply Chain Demand &amp; Inventory Planner</h1>
+  <p id="sub">How much will we sell, which products are about to run out, and what happens if demand or supplier lead times change?</p>
+</header>
+<main>
+  <div class="kpis" id="kpis"></div>
+  <div class="tabs" id="tabs">
+    <button data-t="demand" class="on">Demand &amp; forecast</button>
+    <button data-t="inventory">Inventory &amp; reorders</button>
+    <button data-t="delivery">Delivery performance</button>
+    <button data-t="scenarios">What-if scenarios</button>
+    <button data-t="quality">Data quality</button>
+  </div>
+
+  <section id="demand">
+    <div class="grid">
+      <div class="card"><h2>Monthly demand</h2><p class="note">Units ordered per month, excluding cancelled and suspected-fraud orders.</p><canvas id="cMonthly"></canvas><div class="insight" id="iMonthly"></div></div>
+      <div class="card"><h2>Seasonality index</h2><p class="note">Average weekly demand in each month of 2015-2016 divided by the overall weekly average (1.00 = normal).</p><canvas id="cSeason"></canvas><div class="insight" id="iSeason"></div></div>
+      <div class="card"><h2>Forecast vs actual (backtest)</h2><p class="note">Total weekly units for the 9 core products; each forecast only uses data from before its date.</p><canvas id="cFva"></canvas></div>
+      <div class="card"><h2>Forecast accuracy</h2><p class="note">WAPE = total absolute error / total demand. Lower is better. The 4-week total is what replenishment depends on.</p>
+        <div class="scroll"><table id="tScores"></table></div><div class="insight" id="iScores"></div></div>
+    </div>
+  </section>
+
+  <section id="inventory" class="hide">
+    <div class="grid">
+      <div class="card"><h2>Inventory value over time</h2><p class="note">Stock value at cost during the simulation on real weekly demand.</p><canvas id="cValue"></canvas></div>
+      <div class="card"><h2>Products by status</h2><p class="note">As of the planning date, using the next-4-week forecast.</p><canvas id="cStatus"></canvas><div class="insight" id="iStatus"></div></div>
+    </div>
+    <div class="card" style="margin-top:14px"><h2>Reorder recommendations</h2><p class="note">Reorder point = forecast demand over lead time + review week, plus safety stock at a 95% service level.</p>
+      <div class="scroll"><table id="tRisk"></table></div></div>
+  </section>
+
+  <section id="delivery" class="hide">
+    <div class="grid">
+      <div class="card"><h2>Late shipments by shipping mode</h2><p class="note">Share of shipments that took longer than promised.</p><canvas id="cMode"></canvas><div class="insight" id="iMode"></div></div>
+      <div class="card"><h2>Promised vs actual days</h2><p class="note">Average days per shipping mode.</p><canvas id="cDays"></canvas></div>
+      <div class="card"><h2>Late rate over time</h2><p class="note">Monthly share of late shipments.</p><canvas id="cTrend"></canvas></div>
+      <div class="card"><h2>Late rate by market</h2><p class="note">All shipping modes combined.</p><canvas id="cMarket"></canvas></div>
+    </div>
+  </section>
+
+  <section id="scenarios" class="hide">
+    <div class="card"><h2>What-if scenarios</h2><p class="note">The reorder policy stays as planned while real demand or the supplier's real lead time changes. Simulated on 28 weeks of real demand for the 9 core products.</p>
+      <div class="scroll"><table id="tScen"></table></div><div class="insight" id="iScen"></div></div>
+    <div class="card" style="margin-top:14px"><h2>Fill rate by scenario</h2><canvas id="cScen"></canvas></div>
+  </section>
+
+  <section id="quality" class="hide">
+    <div class="card"><h2>Data cleaning log</h2><p class="note">Every cleaning step is counted, so nothing changes silently.</p><div class="scroll"><table id="tQuality"></table></div>
+      <div class="insight" id="iDrift"></div></div>
+  </section>
+
+  <footer>Data: DataCo Smart Supply Chain dataset (Constante, Silva &amp; Pereira, Mendeley Data, CC BY 4.0). Stock levels are simulated from real demand with stated lead-time and cost assumptions.<br>
+  Built with Python, pandas, SQL (SQLite), scikit-learn and Chart.js. A Power BI version of this dashboard is described in the repository.</footer>
+</main>
+<script>
+const fmt = (n, d=0) => Number(n).toLocaleString('en-US', {maximumFractionDigits:d, minimumFractionDigits:d});
+const money = n => '$' + fmt(n);
+const MONTH = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const C = { blue:'#1f5fbf', grey:'#9aa3b2', orange:'#e08a1e', red:'#c23b3b', green:'#1e8a4c', teal:'#138a8a' };
+Chart.defaults.font.family = 'system-ui, -apple-system, Segoe UI, Roboto, sans-serif';
+Chart.defaults.color = '#5d6675';
+
+fetch('data.json').then(r => r.json()).then(d => {
+  const h = d.headline;
+  const pol = h.policies[h.champion];
+  const kpis = [
+    ['Forecast error (4 weeks)', fmt(h.champion_wape_4w_pct,1) + '%', h.champion + ' won the backtest'],
+    ['On-time delivery', fmt(h.on_time_delivery_pct,1) + '%', h.worst_mode + ' late ' + fmt(h.worst_mode_late_pct,0) + '% of the time'],
+    ['Inventory value now', money(h.inventory_value_now), 'avg ' + money(h.avg_inventory_value) + ' in simulation'],
+    ['Products to reorder', h.products_reorder_now + h.products_stockout_risk, money(h.reorder_value) + ' of purchase orders'],
+    ['Fill rate (simulated)', fmt(pol.fill_rate_pct,2) + '%', fmt(pol.lost_units) + ' units of lost sales'],
+    ['Demand trend', (h.jan_sep_growth_2017_vs_2016_pct>0?'+':'') + fmt(h.jan_sep_growth_2017_vs_2016_pct,1) + '%', 'Jan-Sep 2017 vs 2016'],
+  ];
+  document.getElementById('kpis').innerHTML = kpis.map(k => `<div class="kpi"><div class="l">${k[0]}</div><div class="v">${k[1]}</div><div class="s">${k[2]}</div></div>`).join('');
+
+  // Demand
+  const md = d.monthly_demand;
+  new Chart(cMonthly, { type:'bar', data:{ labels: md.map(r=>r.month), datasets:[{ label:'Units', data: md.map(r=>r.units),
+      backgroundColor: md.map(r=> r.after_catalogue_break ? C.red : C.blue) }]},
+    options:{ plugins:{legend:{display:false}}, scales:{ x:{ticks:{maxTicksLimit:12}} } } });
+  iMonthly.innerHTML = `Demand is flat to slightly falling (${h.growth_2016_vs_2015_pct}% in 2016, ${h.jan_sep_growth_2017_vs_2016_pct}% for Jan-Sep 2017). During 2017 the range changed: ${d.quality.products_discontinued_2017} products were discontinued and ${d.quality.products_launched_2017} short-lived ones launched. <b>From October 2017 (red) volume drops about 80%</b> as the catalogue is replaced, so forecasting covers the ${h.core_products} core products that sold throughout (${h.core_share_of_units_pct}% of units).`;
+  const si = d.season_index;
+  new Chart(cSeason, { type:'line', data:{ labels: MONTH, datasets:[{ label:'Index', data: MONTH.map((m,i)=>si[i+1]), borderColor:C.blue, tension:.3, fill:false }]},
+    options:{ plugins:{legend:{display:false}}, scales:{ y:{ suggestedMin:.9, suggestedMax:1.1 } } } });
+  iSeason.innerHTML = `<b>No real seasonality:</b> every month is within ${Math.round(Math.max(h.season_max-1, 1-h.season_min)*1000)/10}% of a normal week (busiest ${MONTH[h.peak_month-1]}, quietest ${MONTH[h.low_month-1]}). Demand is driven by the product range, not the calendar, so a recent average carries most of the signal.`;
+  const fva = d.forecast_vs_actual;
+  new Chart(cFva, { type:'line', data:{ labels: fva.map(r=>r.week), datasets:[
+      { label:'Actual', data: fva.map(r=>r.Actual), borderColor:'#1d2330', borderWidth:2, pointRadius:0 },
+      { label:h.champion, data: fva.map(r=>r[h.champion]), borderColor:C.blue, pointRadius:0 },
+      { label:'Gradient boosting', data: fva.map(r=>r['Gradient boosting']), borderColor:C.orange, pointRadius:0, borderDash:[4,3] },
+    ]}, options:{ scales:{ x:{ticks:{maxTicksLimit:8}} } } });
+  tScores.innerHTML = '<tr><th>Method</th><th class="n">Weekly WAPE</th><th class="n">4-week WAPE</th><th class="n">Bias</th></tr>' +
+    d.scores.map(r => `<tr><td>${r.method === h.champion ? '<b>'+r.method+'</b> (chosen)' : r.method}</td><td class="n">${fmt(r.wape_weekly_pct,1)}%</td><td class="n">${fmt(r.wape_4week_total_pct,1)}%</td><td class="n">${r.bias_pct>0?'+':''}${fmt(r.bias_pct,1)}%</td></tr>`).join('');
+  iScores.innerHTML = `Five methods were backtested on the ${h.core_products} core products over 28 weeks. Demand is steady, so the <b>${h.champion}</b> was most accurate (${h.champion_wape_4w_pct}% error over 4 weeks); gradient boosting came close (${h.gb_wape_4w_pct}%) and "${h.worst_method}" was worst (${h.worst_wape_4w_pct}%). The plan uses the most accurate method, not the most complex one.`;
+
+  // Inventory
+  const iv = d.inventory_value_weekly;
+  new Chart(cValue, { type:'line', data:{ labels: iv.map(r=>r.week), datasets:[{ label:'Stock value', data: iv.map(r=>r.value), borderColor:C.teal, fill:true, backgroundColor:'rgba(19,138,138,.12)', pointRadius:0 }]},
+    options:{ plugins:{legend:{display:false}}, scales:{ y:{ ticks:{ callback:v=>'$'+fmt(v/1000)+'k' } }, x:{ticks:{maxTicksLimit:8}} } } });
+  const statuses = ['Stockout risk','Reorder now','Healthy','Overstocked'];
+  const counts = statuses.map(s => d.risk.filter(r=>r.status===s).length);
+  new Chart(cStatus, { type:'bar', data:{ labels: statuses, datasets:[{ data: counts, backgroundColor:[C.red,C.orange,C.green,C.blue] }]}, options:{ plugins:{legend:{display:false}}, indexAxis:'y' } });
+  iStatus.innerHTML = `${h.products_reorder_now} products are at or below their reorder point and ${h.products_stockout_risk} would run out before a new order arrives. Recommended purchase orders total <b>${money(h.reorder_value)}</b>.`;
+  const order = {'Stockout risk':0,'Reorder now':1,'Overstocked':2,'Healthy':3};
+  const risk = [...d.risk].sort((a,b)=> order[a.status]-order[b.status] || a.weeks_of_cover-b.weeks_of_cover);
+  tRisk.innerHTML = '<tr><th>Product</th><th>Category (source label)</th><th>Status</th><th class="n">Weekly demand</th><th class="n">On hand</th><th class="n">On order</th><th class="n">Weeks of cover</th><th class="n">Reorder point</th><th class="n">Order qty</th><th class="n">Order value</th></tr>' +
+    risk.map(r => `<tr><td>${r.product}</td><td>${r.category}</td><td><span class="tag t-${r.status.split(' ')[0]}">${r.status}</span></td><td class="n">${fmt(r.weekly_demand,0)}</td><td class="n">${fmt(r.on_hand_now,0)}</td><td class="n">${fmt(r.on_order_now,0)}</td><td class="n">${fmt(r.weeks_of_cover,1)}</td><td class="n">${fmt(r.reorder_point,0)}</td><td class="n">${fmt(r.recommended_order,0)}</td><td class="n">${r.order_value?money(r.order_value):''}</td></tr>`).join('');
+
+  // Delivery
+  const dm = d.delivery_by_mode;
+  new Chart(cMode, { type:'bar', data:{ labels: dm.map(r=>r.shipping_mode), datasets:[{ label:'Late %', data: dm.map(r=>r.late_pct), backgroundColor: dm.map(r=> r.late_pct>60?C.red: r.late_pct>40?C.orange:C.green) }]},
+    options:{ plugins:{legend:{display:false}}, scales:{ y:{ max:100, ticks:{callback:v=>v+'%'} } } } });
+  const p = h.promise;
+  iMode.innerHTML = `<b>The main cause is the promise, not the carrier.</b> First Class promises ${p.promised_days_by_mode['First Class']} day but typically takes ${p.typical_days_by_mode['First Class']}; Second Class promises ${p.promised_days_by_mode['Second Class']} but takes ${p.typical_days_by_mode['Second Class']}. Promising the typical transit time would cut late shipments from ${p.late_pct_now}% to ${p.late_pct_with_realistic_promise}%.`;
+  new Chart(cDays, { type:'bar', data:{ labels: dm.map(r=>r.shipping_mode), datasets:[
+    { label:'Promised', data: dm.map(r=>r.promised_days), backgroundColor:C.grey }, { label:'Actual', data: dm.map(r=>r.actual_days), backgroundColor:C.blue } ]} });
+  const tr = d.delivery_trend;
+  new Chart(cTrend, { type:'line', data:{ labels: tr.map(r=>r.month), datasets:[{ label:'Late %', data: tr.map(r=>r.late_pct), borderColor:C.red, pointRadius:0 }]},
+    options:{ plugins:{legend:{display:false}}, scales:{ y:{ suggestedMin:40, suggestedMax:70, ticks:{callback:v=>v+'%'} }, x:{ticks:{maxTicksLimit:10}} } } });
+  const byM = {};
+  d.delivery_by_market.forEach(r => { byM[r.market] = byM[r.market] || {s:0,l:0}; byM[r.market].s += r.shipments; byM[r.market].l += r.shipments*r.late_pct/100; });
+  const mk = Object.keys(byM).sort((a,b)=> byM[b].l/byM[b].s - byM[a].l/byM[a].s);
+  new Chart(cMarket, { type:'bar', data:{ labels: mk, datasets:[{ label:'Late %', data: mk.map(m=> +(byM[m].l/byM[m].s*100).toFixed(1)), backgroundColor:C.orange }]},
+    options:{ plugins:{legend:{display:false}}, scales:{ y:{ suggestedMin:50, ticks:{callback:v=>v+'%'} } } } });
+
+  // Scenarios
+  const sc = d.scenarios, base = sc[0];
+  tScen.innerHTML = '<tr><th>Scenario</th><th class="n">Fill rate</th><th class="n">Lost units</th><th class="n">Products with stockouts</th><th class="n">Avg inventory value</th></tr>' +
+    sc.map(r => `<tr><td>${r.scenario}</td><td class="n">${fmt(r.fill_rate_pct,1)}%</td><td class="n">${fmt(r.lost_units)}</td><td class="n">${r.products_with_stockouts}</td><td class="n">${money(r.avg_inventory_value)}</td></tr>`).join('');
+  const lt = sc.find(r=>r.scenario.startsWith('Supplier')), up = sc.find(r=>r.scenario.startsWith('Demand +20% (')), both = sc[sc.length-1];
+  iScen.innerHTML = `A one-week supplier delay hurts more than a 20% demand surge: fill rate falls to <b>${lt.fill_rate_pct}%</b> against ${up.fill_rate_pct}%. Both together drop it to ${both.fill_rate_pct}% and affect ${both.products_with_stockouts} products, so lead-time risk should be agreed with suppliers before demand plans are raised.`;
+  new Chart(cScen, { type:'bar', data:{ labels: sc.map(r=>r.scenario), datasets:[{ label:'Fill rate %', data: sc.map(r=>r.fill_rate_pct), backgroundColor: sc.map(r=> r.fill_rate_pct>=99?C.green: r.fill_rate_pct>=90?C.orange:C.red) }]},
+    options:{ plugins:{legend:{display:false}}, scales:{ y:{ suggestedMin:60, max:100, ticks:{callback:v=>v+'%'} } } } });
+
+  // Quality
+  const q = d.quality;
+  const labels = { rows_in_source:'Rows in the source file', personal_or_empty_columns_removed:'Personal or empty columns removed', exact_duplicate_rows:'Exact duplicate rows',
+    product_names_with_stray_spaces:'Product names fixed (stray spaces)', cancelled_lines:'Cancelled order lines (not demand)', suspected_fraud_lines:'Suspected-fraud lines (not demand)',
+    late_flag_mismatches_excluding_cancelled:'Late flag disagreeing with the dates', cancelled_shipments_excluded_from_delivery_kpis:'Cancelled shipments left out of delivery KPIs',
+    lines_after_catalogue_break:'Lines after the October 2017 catalogue change', products_before_break:'Products selling before the change', products_after_break:'Products selling after the change',
+    products_that_stop_at_break:'Products that stop selling at the change', products_discontinued_2017:'Products discontinued during 2017', products_launched_2017:'Products launched during 2017', products_selling_throughout:'Core products selling throughout', demand_lines:'Lines counted as real demand', first_order:'First order', last_order:'Last order' };
+  tQuality.innerHTML = '<tr><th>Check</th><th class="n">Value</th></tr>' + Object.keys(labels).filter(k=>k in q).map(k => `<tr><td>${labels[k]}</td><td class="n">${typeof q[k]==='number'?fmt(q[k]):q[k]}</td></tr>`).join('');
+  iDrift.innerHTML = `<b>Monitoring check:</b> the forecast for the 4 weeks after the planning date was ${fmt(h.drift.forecast_units_next_4_weeks)} units, but only ${fmt(h.drift.actual_units_next_4_weeks)} were ordered (${h.drift.actual_vs_forecast_pct}% of plan), because of the catalogue change. A weekly actual-vs-forecast alert would have caught this in the first week, before purchase orders were placed.`;
+});
+
+document.querySelectorAll('#tabs button').forEach(b => b.addEventListener('click', () => {
+  document.querySelectorAll('#tabs button').forEach(x => x.classList.toggle('on', x === b));
+  ['demand','inventory','delivery','scenarios','quality'].forEach(id => document.getElementById(id).classList.toggle('hide', id !== b.dataset.t));
+  window.dispatchEvent(new Event('resize'));
+}));
+</script>
+</body>
+</html>
